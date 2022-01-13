@@ -1,5 +1,5 @@
 /**
-  Tool
+  Tooltip web-component
 **/
 const template = document.createElement('template');
 template.innerHTML = `
