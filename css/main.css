@@ -4,16 +4,6 @@ body {
 }
 
 .container {
-  width: 80%;
-  margin: 8em auto;
+  width: 100%;
+  padding: 12px;
 }
-
-c-file-upload::part(upload-button) {
-  border: none;
-  color: white;
-  padding: 9px 22px;
-  font-size: 14px;
-  margin-bottom: 10px;
-}
-.upload1::part(upload-button) {background-color: #4CAF50;}
-.upload2::part(upload-button) {background-color: #555555;}

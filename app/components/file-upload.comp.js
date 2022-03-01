@@ -6,28 +6,17 @@ export class FileUploadComponent extends HTMLElement {
 
   connectedCallback() {
     this.shadowDom.innerHTML = this.render();
-    this.shadowDom.querySelector('input').addEventListener('change', this.handleChange);
+    this.$section = this.shadowDom.querySelector('section');
+    this.$span = this.shadowDom.querySelector('span');
+
+    // A changer
+    this.shadowDom.querySelector('input').addEventListener('change', (ev) => this.handleChange(ev, this.$section));
     this.shadowDom.querySelector('button').addEventListener('click', this.handleRemove);
 
     // connectedCallback is called after attributeChangedCallback
     if (this.label) {
       this.shadowDom.querySelector('label').innerHTML = this.label;
     }
-  }
-
-  handleChange(e) {
-      const file = e.target.files[0];
-      this.shadowDom.querySelector('section').style.display = "block";
-      this.shadowDom.querySelector('span').innerText = file.name;
-      this.shadowDom.dispatch('change', file);
-  }
-
-  handleRemove() {
-    const el = this.shadowDom.querySelector('input');
-    const file = el.files[0];
-    el.value = "";
-    this.shadowDom.querySelector('section').style.display = "none";
-    this.shadowDom.dispatch('change', file);
   }
 
   static get observedAttributes() {
@@ -42,6 +31,22 @@ export class FileUploadComponent extends HTMLElement {
     }
   }
 
+  handleChange(e, section) {
+      const file = e.target.files[0];
+      this.$section.style.display = "block";
+      this.$span.innerText = file.name;
+      this.dispatch('change', file);
+      e.stopImmediatePropagation();
+  }
+
+  handleRemove() {
+    const el = this.shadowDom.querySelector('input');
+    const file = el.files[0];
+    el.value = "";
+    this.shadowDom.querySelector('section').style.display = "none";
+    this.shadowDom.dispatch('change', file);
+  }
+
   dispatch(event, arg) {
     this.dispatchEvent(new CustomEvent(event, {detail: arg}));
   }
@@ -53,10 +58,6 @@ export class FileUploadComponent extends HTMLElement {
   render() {
     return `
       <style>
-          :host {
-            font-size: 13px;
-            font-family: arial;
-          }
           article {
               display: flex;
               align-items: center;

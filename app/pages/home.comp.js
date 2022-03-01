@@ -31,8 +31,7 @@ export class HomeComponent extends HTMLElement {
       </p>
 
       <h1>My file-upload</h1>
-      <c-file-upload upload-label="Browse..." class="upload1"></c-file-upload>
-      <c-file-upload upload-label="Upload Files" class="upload2"></c-file-upload>
+      <c-file-upload upload-label="Upload Files"></c-file-upload>
     </div>
     `;
   }
