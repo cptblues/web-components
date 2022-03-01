@@ -1,31 +1,33 @@
 export class FileUploadComponent extends HTMLElement {
   constructor() {
     super();
-        
-    // Add event listeners
-    
-    
+    this.shadowDom = this.attachShadow({ mode: 'open' });
   }
 
   connectedCallback() {
-    this.innerHTML = this.render();
-    this.querySelector('input').addEventListener('change', this.handleChange);
-    this.querySelector('button').addEventListener('click', this.handleRemove);
+    this.shadowDom.innerHTML = this.render();
+    this.shadowDom.querySelector('input').addEventListener('change', this.handleChange);
+    this.shadowDom.querySelector('button').addEventListener('click', this.handleRemove);
+
+    // connectedCallback is called after attributeChangedCallback
+    if (this.label) {
+      this.shadowDom.querySelector('label').innerHTML = this.label;
+    }
   }
 
   handleChange(e) {
       const file = e.target.files[0];
-      this.querySelector('section').style.display = "block";
-      this.querySelector('span').innerText = file.name;
-      this.dispatch('change', file);
+      this.shadowDom.querySelector('section').style.display = "block";
+      this.shadowDom.querySelector('span').innerText = file.name;
+      this.shadowDom.dispatch('change', file);
   }
 
   handleRemove() {
-    const el = this.querySelector('input');
+    const el = this.shadowDom.querySelector('input');
     const file = el.files[0];
     el.value = "";
-    this.querySelector('section').style.display = "none";
-    this.dispatch('change', file);
+    this.shadowDom.querySelector('section').style.display = "none";
+    this.shadowDom.dispatch('change', file);
   }
 
   static get observedAttributes() {
@@ -33,9 +35,9 @@ export class FileUploadComponent extends HTMLElement {
   }
 
   attributeChangedCallback(name, oldValue, newValue) {
-    if (name === 'upload-label' && this.querySelector('label')) {
+    if (name === 'upload-label') {
         if (newValue && newValue !== '' && newValue !== null) {
-          this.querySelector('label').innerText = newValue;
+          this.label = newValue;
         }
     }
   }

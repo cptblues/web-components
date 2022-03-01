@@ -7,8 +7,6 @@ export class HomeComponent extends HTMLElement {
     return [];
   }
 
-  attributeChangedCallback(name, oldValue, newValue) {}
-
   connectedCallback() {
     this.innerHTML = this.render();
   }

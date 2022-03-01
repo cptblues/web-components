@@ -1,21 +1,22 @@
 export class TooltipComponent extends HTMLElement {
   constructor() {
     super();
+    this.shadowDom = this.attachShadow({ mode: 'open' });
   }
 
   connectedCallback() {
-    this.innerHTML = this.render();
-    this.tooltip = this.querySelector('.notify-container');
-    this.alert = this.querySelector('.alert');
-    this.cancel = this.querySelector('.cancel');
+    this.shadowDom.innerHTML = this.render();
+    this.tooltip = this.shadowDom.querySelector('.notify-container');
+    this.alert = this.shadowDom.querySelector('.alert');
+    this.cancel = this.shadowDom.querySelector('.cancel');
 
     this.applyCustomStyling();
 
-    this.querySelector('.alert').addEventListener('click', () => {
+    this.shadowDom.querySelector('.alert').addEventListener('click', () => {
       this.expandTooltip();
     });
 
-    this.querySelector('.cancel').addEventListener('click', () => {
+    this.shadowDom.querySelector('.cancel').addEventListener('click', () => {
       this.closeTooltip();
     });
   }
